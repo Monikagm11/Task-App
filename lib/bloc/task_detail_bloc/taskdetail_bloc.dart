@@ -15,7 +15,7 @@ class TaskdetailBloc extends Bloc<TaskdetailEvent, TaskdetailState> {
         SharedPreferences preferences = await SharedPreferences.getInstance();
         Dio dio = Dio();
 
-        Response response = await dio.get("${EndPoints.task}${event.id}",
+        Response response = await dio.get("${EndPoints.task}${event.id}/",
             options: Options(headers: {
               "Authorization": "Bearer ${preferences.getString("token")}"
             }));
@@ -29,11 +29,8 @@ class TaskdetailBloc extends Bloc<TaskdetailEvent, TaskdetailState> {
           emit(
             TaskDetailLoadedState(
               taskList: Datum.fromJson(response.data['data']),
-              
             ),
           );
-
-         
 
           return response.data;
         }

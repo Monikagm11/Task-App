@@ -1,5 +1,6 @@
 import 'package:authenticationapp/Presentation/screens/home/view_task.dart';
 import 'package:authenticationapp/bloc/edit_task_bloc/edit_task_bloc.dart';
+import 'package:authenticationapp/data/task_model.dart';
 import 'package:authenticationapp/utils/constants/color_constants.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
@@ -7,37 +8,30 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class EditTaskPage extends StatefulWidget {
-  const EditTaskPage({super.key});
+  final Datum data;
+  const EditTaskPage({super.key, required this.data});
 
   @override
-  State<EditTaskPage> createState() => _AddTaskState();
+  State<EditTaskPage> createState() => _EditTaskPage();
 }
 
-class _AddTaskState extends State<EditTaskPage> {
-  TextEditingController title_controller = TextEditingController();
+class _EditTaskPage extends State<EditTaskPage> {
+  final TextEditingController title_controller = TextEditingController();
   final TextEditingController description_controller = TextEditingController();
-  final TextEditingController startdate_controller = TextEditingController();
-  final TextEditingController enddate_controller = TextEditingController();
+  TextEditingController startdate_controller = TextEditingController();
+  TextEditingController enddate_controller = TextEditingController();
 
   final task_key = GlobalKey<FormState>();
   final DateTime start_date = DateTime.now();
 
   @override
-  // void initState() {
-  //   super.initState();
-  //   WidgetsFlutterBinding.ensureInitialized()
-  //       .addPostFrameCallback((timeStamp) async {
-  //     BlocProvider.of<AddTaskBloc>(context).add(
-  //       AddTaskButtonClickedEvent(
-  //         title: "",
-  //         description: "",
-  //         startdate: "",
-  //         enddate: "",
-  //         status: 0,
-  //       ),
-  //     );
-  //   });
-  // }
+  void initState() {
+    super.initState();
+    title_controller.text = widget.data.title;
+    description_controller.text = widget.data.description;
+    startdate_controller.text = widget.data.startDate;
+    enddate_controller.text = widget.data.endDate;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +45,19 @@ class _AddTaskState extends State<EditTaskPage> {
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ViewTaskPage(),
+                  ));
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+              size: 30,
+            )),
         backgroundColor: ColorConstant.blue,
 
         // IconButton(
@@ -63,20 +70,20 @@ class _AddTaskState extends State<EditTaskPage> {
         //       size: 35,
         //     )),
 
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ViewTaskPage()));
-              },
-              icon: const Icon(
-                Icons.task,
-                size: 35,
-                color: Color.fromARGB(255, 244, 228, 87),
-              ))
-        ],
+        // actions: [
+        //   IconButton(
+        //       onPressed: () {
+        //         Navigator.push(
+        //             context,
+        //             MaterialPageRoute(
+        //                 builder: (context) => const ViewTaskPage()));
+        //       },
+        //       icon: const Icon(
+        //         Icons.task,
+        //         size: 35,
+        //         color: Color.fromARGB(255, 244, 228, 87),
+        //       ))
+        // ],
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -157,7 +164,7 @@ class _AddTaskState extends State<EditTaskPage> {
                           firstDate: start_date,
                           lastDate: DateTime(2025));
                       if (pickendDate != null) {
-                        enddate_controller.text = DateFormat("yyyy - MM - dd")
+                        enddate_controller.text = DateFormat("yyyy-MM-dd")
                             .format(pickendDate)
                             .toString();
                       }
@@ -186,7 +193,14 @@ class _AddTaskState extends State<EditTaskPage> {
                       }
                       if (state is EditTaskLoadedState) {
                         BotToast.closeAllLoading();
-                        BotToast.showText(text: "Task succesfully added");
+                        BotToast.showText(
+                          text: "Task succesfully edited",
+                        );
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ViewTaskPage(),
+                            ));
                       }
                       if (state is EditTaskErrorState) {
                         BotToast.closeAllLoading();
@@ -209,7 +223,7 @@ class _AddTaskState extends State<EditTaskPage> {
                                   description: description_controller.text,
                                   startdate: start_date.toString(),
                                   enddate: enddate_controller.toString(),
-                                  id: 17));
+                                  id: widget.data.id));
 
                           setState(() {
                             title_controller.text = "";

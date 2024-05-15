@@ -1,4 +1,5 @@
 import 'package:authenticationapp/Presentation/screens/authentication/login_page.dart';
+import 'package:authenticationapp/bloc/delete_task_bloc/delete_task_bloc.dart';
 import 'package:authenticationapp/bloc/edit_task_bloc/edit_task_bloc.dart';
 import 'package:authenticationapp/bloc/login_bloc/login_bloc.dart';
 import 'package:authenticationapp/bloc/register_bloc/register_bloc.dart';
@@ -43,6 +44,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => EditTaskBloc(),
+        ),
+         BlocProvider(
+          create: (context) => DeleteTaskBloc(),
         ),
       ],
       child: MaterialApp(

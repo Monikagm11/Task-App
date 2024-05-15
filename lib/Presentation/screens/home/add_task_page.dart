@@ -7,8 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class AddTaskPage extends StatefulWidget {
-  
-
   const AddTaskPage({super.key});
 
   @override
@@ -54,6 +52,15 @@ class _AddTaskState extends State<AddTaskPage> {
         ),
         centerTitle: true,
         backgroundColor: ColorConstant.blue,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+              size: 30,
+            )),
 
         // IconButton(
         //     onPressed: () {
@@ -65,20 +72,20 @@ class _AddTaskState extends State<AddTaskPage> {
         //       size: 35,
         //     )),
 
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ViewTaskPage()));
-              },
-              icon: const Icon(
-                Icons.task,
-                size: 35,
-                color: Color.fromARGB(255, 244, 228, 87),
-              ))
-        ],
+        // actions: [
+        //   IconButton(
+        //       onPressed: () {
+        //         Navigator.push(
+        //             context,
+        //             MaterialPageRoute(
+        //                 builder: (context) => const ViewTaskPage()));
+        //       },
+        //       icon: const Icon(
+        //         Icons.task,
+        //         size: 35,
+        //         color: Color.fromARGB(255, 244, 228, 87),
+        //       ))
+        // ],
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -189,6 +196,11 @@ class _AddTaskState extends State<AddTaskPage> {
                       if (state is AddTaskBlocLoadedState) {
                         BotToast.closeAllLoading();
                         BotToast.showText(text: "Task succesfully added");
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ViewTaskPage(),
+                            ));
                       }
                       if (state is AddTaskBlocErrorState) {
                         BotToast.closeAllLoading();

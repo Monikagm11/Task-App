@@ -26,11 +26,11 @@ class EditTaskBloc extends Bloc<EditTaskEvent, EditTaskState> {
 
         // print(taskBody);
         print(preferences.getString("token"));
-        Response response = await dio.put("${EndPoints.task}17",
+        Response response = await dio.put("${EndPoints.task}${event.id}/",
             data: {
               "title": event.title,
               "description": event.description,
-              "id": 17,
+              "id": event.id,
               "start_date": event.startdate,
               "end_date": event.enddate
             },
