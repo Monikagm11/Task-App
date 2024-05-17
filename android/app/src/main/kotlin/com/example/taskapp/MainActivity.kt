@@ -1,4 +1,4 @@
-package com.example.authenticationapp
+package com.example.taskapp
 
 import io.flutter.embedding.android.FlutterActivity
 

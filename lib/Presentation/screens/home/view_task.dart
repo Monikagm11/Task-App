@@ -5,12 +5,13 @@ import 'package:authenticationapp/Presentation/screens/home/task_detail_page.dar
 import 'package:authenticationapp/bloc/delete_task_bloc/delete_task_bloc.dart';
 import 'package:authenticationapp/bloc/task_detail_bloc/taskdetail_bloc.dart';
 import 'package:authenticationapp/bloc/update_taskbloc/update_task_bloc.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../bloc/view_task_bloc/viewtask_bloc.dart';
 import '../../../data/task_model.dart';
-import '../../../utils/constants/color_constants.dart';
 
 class ViewTaskPage extends StatefulWidget {
   const ViewTaskPage({super.key});
@@ -32,47 +33,40 @@ class _ViewTaskPageState extends State<ViewTaskPage>
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+          backgroundColor: const Color.fromARGB(255, 244, 244, 244),
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-            title: const Text(
+            title: Text(
               "Your Task",
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.red[300], fontSize: 22.sp),
             ),
             centerTitle: true,
-            backgroundColor: ColorConstant.blue,
+            backgroundColor: const Color.fromARGB(255, 244, 244, 244),
             automaticallyImplyLeading: false,
-            leading: IconButton(
-              style: IconButton.styleFrom(
-                foregroundColor: Colors.white,
-              ),
-              icon: CircleAvatar(
-                backgroundColor: Colors.green[200],
-                child: const Icon(
-                  Icons.add,
-                  size: 30,
+            actions: [
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const AddTaskPage(),
+                    ),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.green[300],
+                  ),
+                  child: const Text(
+                    "Add Task",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const AddTaskPage(),
-                  ),
-                );
-              },
-            ),
-            // leading: IconButton(
-            //     onPressed: () {
-            //       Navigator.pop(context);
-            //     },
-            //     icon: const Icon(
-            //       Icons.arrow_back,
-            //       color: Colors.white,
-            //       size: 30,
-            //     )),
-            actions: [
               IconButton(
                   onPressed: () {
                     showDialog(
@@ -81,18 +75,17 @@ class _ViewTaskPageState extends State<ViewTaskPage>
                               backgroundColor: Colors.white,
                               surfaceTintColor: Colors.white,
                               elevation: 2.0,
-
                               title: Text("Sign_Out!!",
                                   style: TextStyle(
-                                      color: Colors.red[200],
-                                      fontSize: 20,
+                                      color: const Color(0xffE78895),
+                                      fontSize: 20.sp,
                                       fontWeight: FontWeight.bold)),
-                              content: const SizedBox(
-                                height: 40,
+                              content: SizedBox(
+                                height: 40.h,
                                 child: Text(
                                   "Do you really want to sign-out?",
                                   style: TextStyle(
-                                      color: Colors.black, fontSize: 16),
+                                      color: Colors.black, fontSize: 16.sp),
                                 ),
                               ),
                               actions: [
@@ -103,11 +96,9 @@ class _ViewTaskPageState extends State<ViewTaskPage>
                                     ElevatedButton(
                                         style: ButtonStyle(
                                             backgroundColor:
-                                                MaterialStateProperty.all(
+                                                WidgetStateProperty.all(
                                                     Colors.red[200])),
                                         onPressed: () {
-                                          // SystemNavigator.pop();
-                                          // Navigator.pop(context);
                                           Navigator.pushAndRemoveUntil(
                                               context,
                                               MaterialPageRoute(
@@ -115,6 +106,27 @@ class _ViewTaskPageState extends State<ViewTaskPage>
                                                     const LoginPage(),
                                               ),
                                               (route) => false);
+
+                                          // ScaffoldMessenger.of(context)
+                                          //     .showSnackBar( SnackBar(
+                                          //         backgroundColor: Colors.red[300],
+                                          //         duration:
+                                          //             Duration(seconds: 1),
+                                          //         behavior:
+                                          //             SnackBarBehavior.floating,
+                                          //         elevation: 2,
+                                          //         dismissDirection:
+                                          //             DismissDirection
+                                          //                 .startToEnd,
+                                          //         width: 200,
+                                          //         content: Text(
+                                          //           "Succesfully logged out",
+                                          //           style: TextStyle(
+                                          //               color: Colors.white),
+                                          //         )));
+
+                                          BotToast.showText(
+                                              text: "Logged out succesfully");
                                         },
                                         child: const Text(
                                           "Yes",
@@ -123,7 +135,7 @@ class _ViewTaskPageState extends State<ViewTaskPage>
                                     ElevatedButton(
                                         style: ButtonStyle(
                                             backgroundColor:
-                                                MaterialStateProperty.all(
+                                                WidgetStateProperty.all(
                                                     Colors.green[300])),
                                         onPressed: () {
                                           Navigator.pop(context);
@@ -135,21 +147,22 @@ class _ViewTaskPageState extends State<ViewTaskPage>
                                   ],
                                 ),
                               ],
-                              // elevation: 6,
                             ));
-                    // Navigator.pop(context);
                   },
                   icon: const Icon(
                     Icons.login_outlined,
-                    color: Colors.red,
+                    color: Color(0xffE78895),
                     size: 35,
                   )),
             ],
             bottom: TabBar(
-              indicatorColor: Colors.white,
-              labelColor: Colors.white,
-              labelStyle: const TextStyle(fontSize: 18),
+              indicatorColor: Colors.green,
+              labelColor: Colors.black,
+              labelStyle: TextStyle(
+                fontSize: 16.sp,
+              ),
               controller: _tabController,
+              dividerHeight: 0,
               tabs: const [
                 Tab(
                   text: "Pending",
@@ -168,382 +181,388 @@ class _ViewTaskPageState extends State<ViewTaskPage>
               datalist = state.taskList;
 
               return TabBarView(controller: _tabController, children: [
-                ListView.builder(
-                  //physics: const ScrollPhysics(),
-                  //shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    // final item = datalist[index];
-                    Datum item = datalist
-                        .where((item) => item.status == 0)
-                        .elementAt(index);
+                Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 20),
+                      child: ListView.builder(
+                        // physics: const ScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          Datum item = datalist
+                              .where((item) => item.status == 0)
+                              .elementAt(index);
 
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
-                      child: BlocConsumer<UpdateTaskBloc, UpdateTaskState>(
-                        listener: (context, state) {},
-                        builder: (context, state) {
-                          return Dismissible(
-                            onDismissed: (value) {
-                              BlocProvider.of<UpdateTaskBloc>(context)
-                                  .add(UpdateTaskSlideEvent(id: item.id));
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 5, 20, 5),
+                            child:
+                                BlocConsumer<UpdateTaskBloc, UpdateTaskState>(
+                              listener: (context, state) {},
+                              builder: (context, state) {
+                                return Dismissible(
+                                  onDismissed: (value) {
+                                    BlocProvider.of<UpdateTaskBloc>(context)
+                                        .add(UpdateTaskSlideEvent(id: item.id));
 
-                              setState(() {
-                                datalist.removeAt(index);
-                                // Then show a snackbar.
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                    content: Text(
-                                        '${item.title} dismissed with status ${item.status}')));
-                                BlocProvider.of<ViewtaskBloc>(context)
-                                    .add(ViewtaskButtonClickedEvent());
-                                _tabController.animateTo(1);
-                              });
-                            },
-                            // Show a red background as the item is swiped away.
-
-                            key: UniqueKey(),
-                            child: InkWell(
-                              onTap: () {
-                                // BlocProvider.of<TaskdetailBloc>(context)
-                                //     .add(TaskDetailViewEvent(id: item.id));
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => BlocProvider(
-                                        create: (context) => TaskdetailBloc(),
-                                        child: TaskDetailPage(
-                                          id: item.id,
-                                        ),
+                                    setState(() {
+                                      datalist.removeAt(index);
+                                      // Then show a snackbar.
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  '${item.title} dismissed with status 1')));
+                                      BlocProvider.of<ViewtaskBloc>(context)
+                                          .add(ViewtaskButtonClickedEvent());
+                                      _tabController.animateTo(1);
+                                    });
+                                  },
+                                  key: UniqueKey(),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => BlocProvider(
+                                              create: (context) =>
+                                                  TaskdetailBloc(),
+                                              child: TaskDetailPage(
+                                                id: item.id,
+                                              ),
+                                            ),
+                                          ));
+                                    },
+                                    child: Container(
+                                      height: 90.h,
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10, 5, 10, 5),
+                                      decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5)),
+                                        color: Colors.white,
                                       ),
-                                    ));
-                              },
-                              child: Container(
-                                height: 120,
-                                padding:
-                                    const EdgeInsets.fromLTRB(20, 10, 20, 10),
-
-                                // height: 100,
-                                // width: 400,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: ColorConstant.blue, width: 2),
-                                    borderRadius: BorderRadius.circular(20),
-                                    // border: ,
-
-                                    color: Colors.white),
-
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    // Text(
-                                    //   item.id.toString(),
-                                    //   style: const TextStyle(
-                                    //     fontSize: 18,
-                                    //     color: Color.fromARGB(255, 77, 74, 74),
-                                    //   ),
-                                    // ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          item.title,
-                                          style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: ColorConstant.blue,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      // width: 100,
-                                      child: Column(
-                                        // mainAxisAlignment:
-                                        //     MainAxisAlignment.start,
-                                        // crossAxisAlignment: Cros,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
+                                      child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          CircleAvatar(
-                                            backgroundColor: Colors.green[300],
-                                            child: BlocListener<TaskdetailBloc,
-                                                TaskdetailState>(
-                                              listener: (context, state) {
-                                                if (state
-                                                    is TaskDetailLoadedState) {
-                                                  Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          EditTaskPage(
-                                                              data: state
-                                                                  .taskList),
-                                                    ),
-                                                  );
-                                                }
-                                              },
-                                              child: IconButton(
-                                                onPressed: () {
-                                                  BlocProvider.of<
-                                                              TaskdetailBloc>(
-                                                          context)
-                                                      .add(
-                                                    TaskDetailViewEvent(
-                                                        id: item.id),
-                                                  );
-                                                },
-                                                icon: const Icon(
-                                                  Icons.edit,
-                                                  size: 20,
-                                                  color: Colors.white,
-                                                ),
+                                          SizedBox(
+                                            width: 200.w,
+                                            child: Text(
+                                              item.title,
+                                              softWrap: true,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: 15.sp,
+                                                fontWeight: FontWeight.w500,
+                                                color: const Color.fromARGB(
+                                                    255, 85, 83, 83),
                                               ),
                                             ),
                                           ),
-                                          BlocListener<DeleteTaskBloc,
-                                              DeleteTaskState>(
-                                            listener: (context, state) {
-                                              if (state
-                                                  is DeleteTaskLoadedState) {
-                                                BlocProvider.of<ViewtaskBloc>(
-                                                        context)
-                                                    .add(
-                                                        ViewtaskButtonClickedEvent());
-                                              }
-                                            },
-                                            child: CircleAvatar(
-                                              backgroundColor: Colors.red[200],
-                                              child: IconButton(
-                                                  onPressed: () {
-                                                    showDialog(
-                                                      context: context,
-                                                      builder: (context) =>
-                                                          AlertDialog(
-                                                        elevation: 2,
-                                                        backgroundColor:
-                                                            Colors.white,
-                                                        surfaceTintColor:
-                                                            Colors.white,
-                                                        title: const Text(
-                                                            "Delete Task?",
-                                                            style: TextStyle(
-                                                              color: Colors.red,
-                                                            )),
-                                                        content: const SizedBox(
-                                                          height: 40,
-                                                          child: Text(
-                                                            "Do you really want to delete the selected task??",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize: 16),
-                                                          ),
-                                                        ),
-                                                        actions: [
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceEvenly,
-                                                            children: [
-                                                              ElevatedButton(
-                                                                  style: ButtonStyle(
-                                                                      backgroundColor:
-                                                                          MaterialStateProperty.all(Colors.red[
-                                                                              200]),
-                                                                      foregroundColor:
-                                                                          MaterialStateProperty.all(Colors
-                                                                              .white)),
-                                                                  onPressed:
-                                                                      () {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  },
-                                                                  child:
-                                                                      const Text(
-                                                                    "No",
-                                                                  )),
-                                                              ElevatedButton(
-                                                                  style: ButtonStyle(
-                                                                      backgroundColor:
-                                                                          MaterialStateProperty.all(Colors.green[
-                                                                              200]),
-                                                                      foregroundColor:
-                                                                          MaterialStateProperty.all(Colors
-                                                                              .white)),
-                                                                  onPressed:
-                                                                      () {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                    BlocProvider.of<DeleteTaskBloc>(
-                                                                            context)
-                                                                        .add(DeleteTaskButtonClickedEvent(
-                                                                            id: item.id));
-                                                                  },
-                                                                  child:
-                                                                      const Text(
-                                                                          "Yes")),
-                                                            ],
-                                                          )
-                                                        ],
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              BlocListener<TaskdetailBloc,
+                                                  TaskdetailState>(
+                                                listener: (context, state) {
+                                                  if (state
+                                                      is TaskDetailLoadedState) {
+                                                    Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            EditTaskPage(
+                                                                data: state
+                                                                    .taskList),
                                                       ),
                                                     );
-                                                    // BlocProvider.of<
-                                                    //             DeleteTaskBloc>(
-                                                    //         context)
-                                                    //     .add(
-                                                    //         DeleteTaskButtonClickedEvent(
-                                                    //             id: item.id));
+                                                  }
+                                                },
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    BlocProvider.of<
+                                                                TaskdetailBloc>(
+                                                            context)
+                                                        .add(
+                                                      TaskDetailViewEvent(
+                                                          id: item.id),
+                                                    );
                                                   },
-                                                  icon: const Icon(
-                                                    Icons.delete,
-                                                    size: 20,
-                                                    color: Colors.white,
-                                                  )),
-                                            ),
+                                                  child: const Icon(
+                                                    Icons.edit,
+                                                    size: 28,
+                                                    color: Colors.green,
+                                                  ),
+                                                ),
+                                              ),
+                                              BlocListener<DeleteTaskBloc,
+                                                  DeleteTaskState>(
+                                                listener: (context, state) {
+                                                  if (state
+                                                      is DeleteTaskLoadedState) {
+                                                    BlocProvider.of<
+                                                                ViewtaskBloc>(
+                                                            context)
+                                                        .add(
+                                                            ViewtaskButtonClickedEvent());
+                                                  }
+                                                },
+                                                child: InkWell(
+                                                    onTap: () {
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (context) =>
+                                                            AlertDialog(
+                                                          elevation: 2,
+                                                          backgroundColor:
+                                                              Colors.white,
+                                                          surfaceTintColor:
+                                                              Colors.white,
+                                                          title: const Text(
+                                                              "Delete Task?",
+                                                              style: TextStyle(
+                                                                color:
+                                                                    Colors.red,
+                                                              )),
+                                                          content: SizedBox(
+                                                            height: 40.h,
+                                                            child: Text(
+                                                              "Do you really want to delete the selected task??",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize:
+                                                                      16.sp),
+                                                            ),
+                                                          ),
+                                                          actions: [
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceEvenly,
+                                                              children: [
+                                                                ElevatedButton(
+                                                                    style: ButtonStyle(
+                                                                        backgroundColor:
+                                                                            WidgetStateProperty.all(Colors.red[
+                                                                                200]),
+                                                                        foregroundColor:
+                                                                            WidgetStateProperty.all(Colors
+                                                                                .white)),
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    },
+                                                                    child:
+                                                                        const Text(
+                                                                      "No",
+                                                                    )),
+                                                                ElevatedButton(
+                                                                    style: ButtonStyle(
+                                                                        backgroundColor:
+                                                                            WidgetStateProperty.all(Colors.green[
+                                                                                200]),
+                                                                        foregroundColor:
+                                                                            WidgetStateProperty.all(Colors
+                                                                                .white)),
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                      BlocProvider.of<DeleteTaskBloc>(
+                                                                              context)
+                                                                          .add(DeleteTaskButtonClickedEvent(
+                                                                              id: item.id));
+                                                                    },
+                                                                    child: const Text(
+                                                                        "Yes")),
+                                                              ],
+                                                            )
+                                                          ],
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: const Icon(
+                                                      Icons.delete,
+                                                      size: 28,
+                                                      color: Colors.red,
+                                                    )),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
                                     ),
-                                    // const Text("hi")
-                                    // const SizedBox(
-                                    //   height: 5,
-                                    // ),
-                                    // Text(
-                                    //   item.description,
-                                    //   style: const TextStyle(
-                                    //     fontSize: 18,
-                                    //     color: Color.fromARGB(255, 77, 74, 74),
-                                    //   ),
-                                    // ),
-                                  ],
-                                ),
-                              ),
+                                  ),
+                                );
+                              },
                             ),
                           );
                         },
+                        itemCount:
+                            datalist.where((item) => item.status == 0).length,
                       ),
-                    );
-                  },
-                  itemCount: datalist.where((item) => item.status == 0).length,
+                    ),
+                  ],
                 ),
-                ListView.builder(
-                  //physics: const ScrollPhysics(),
-                  //shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    // final item = datalist[index];
-                    Datum item = datalist
-                        .where((item) => item.status == 1)
-                        .elementAt(index);
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 40),
+                  child: SizedBox(
+                    height: size.height * 0.8,
+                    child: ListView.builder(
+                      itemBuilder: (context, index) {
+                        Datum item = datalist
+                            .where((item) => item.status == 1)
+                            .elementAt(index);
 
-                    print(item.id);
+                        print(item.id);
 
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BlocProvider(
-                                  create: (context) => TaskdetailBloc(),
-                                  child: TaskDetailPage(
-                                    id: item.id,
-                                  ),
-                                ),
-                              ));
-                        },
-                        child: Container(
-                          height: 120,
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-
-                          // height: 100,
-                          // width: 400,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: ColorConstant.blue, width: 2),
-                              borderRadius: BorderRadius.circular(20),
-                              // border: ,
-
-                              color: Colors.white),
-
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              // Text(
-                              //   item.id.toString(),
-                              //   style: const TextStyle(
-                              //     fontSize: 18,
-                              //     color: Color.fromARGB(255, 77, 74, 74),
-                              //   ),
-                              // ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    item.title,
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: ColorConstant.blue,
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BlocProvider(
+                                      create: (context) => TaskdetailBloc(),
+                                      child: TaskDetailPage(
+                                        id: item.id,
+                                      ),
                                     ),
+                                  ));
+                            },
+                            child: Container(
+                              height: 90.h,
+                              padding: const EdgeInsets.fromLTRB(20, 5, 5, 5),
+                              decoration: const BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5)),
+                                color: Colors.white,
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        width: 200.w,
+                                        child: Text(
+                                          item.title,
+                                          //overflow: TextOverflow.ellipsis,
+                                          softWrap: true,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: 15.sp,
+                                            fontWeight: FontWeight.w500,
+                                            color: const Color.fromARGB(
+                                                255, 85, 83, 83),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  BlocListener<DeleteTaskBloc, DeleteTaskState>(
+                                    listener: (context, state) {
+                                      if (state is DeleteTaskLoadedState) {
+                                        BlocProvider.of<ViewtaskBloc>(context)
+                                            .add(ViewtaskButtonClickedEvent());
+                                      }
+                                    },
+                                    child: IconButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                              elevation: 2,
+                                              backgroundColor: Colors.white,
+                                              surfaceTintColor: Colors.white,
+                                              title: const Text("Delete Task?",
+                                                  style: TextStyle(
+                                                    color: Colors.red,
+                                                  )),
+                                              content: SizedBox(
+                                                height: 40.h,
+                                                child: Text(
+                                                  "Do you really want to delete the selected task??",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 16.sp),
+                                                ),
+                                              ),
+                                              actions: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    ElevatedButton(
+                                                        style: ButtonStyle(
+                                                            backgroundColor:
+                                                                WidgetStateProperty
+                                                                    .all(Colors
+                                                                            .red[
+                                                                        200]),
+                                                            foregroundColor:
+                                                                WidgetStateProperty
+                                                                    .all(Colors
+                                                                        .white)),
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: const Text(
+                                                          "No",
+                                                        )),
+                                                    ElevatedButton(
+                                                        style: ButtonStyle(
+                                                            backgroundColor:
+                                                                WidgetStateProperty
+                                                                    .all(Colors
+                                                                            .green[
+                                                                        200]),
+                                                            foregroundColor:
+                                                                WidgetStateProperty
+                                                                    .all(Colors
+                                                                        .white)),
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                          BlocProvider.of<
+                                                                      DeleteTaskBloc>(
+                                                                  context)
+                                                              .add(
+                                                                  DeleteTaskButtonClickedEvent(
+                                                                      id: item
+                                                                          .id));
+                                                        },
+                                                        child:
+                                                            const Text("Yes")),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                        icon: const Icon(
+                                          Icons.delete,
+                                          size: 25,
+                                          color: Colors.red,
+                                        )),
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                // width: 100,
-                                child: Column(
-                                  // mainAxisAlignment:
-                                  //     MainAxisAlignment.start,
-                                  // crossAxisAlignment: Cros,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor: Colors.green[300],
-                                      child: IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(
-                                            Icons.edit,
-                                            size: 20,
-                                            color: Colors.white,
-                                          )),
-                                    ),
-                                    CircleAvatar(
-                                      backgroundColor: Colors.red[200],
-                                      child: IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(
-                                            Icons.delete,
-                                            size: 20,
-                                            color: Colors.white,
-                                          )),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              // const Text("hi")
-                              // const SizedBox(
-                              //   height: 5,
-                              // ),
-                              // Text(
-                              //   item.description,
-                              //   style: const TextStyle(
-                              //     fontSize: 18,
-                              //     color: Color.fromARGB(255, 77, 74, 74),
-                              //   ),
-                              // ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                    );
-                  },
-                  itemCount: datalist.where((item) => item.status == 1).length,
+                        );
+                      },
+                      itemCount:
+                          datalist.where((item) => item.status == 1).length,
+                    ),
+                  ),
                 ),
               ]);
             }

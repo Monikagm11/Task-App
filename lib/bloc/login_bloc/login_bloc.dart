@@ -24,6 +24,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
         Response response = await dio.post(EndPoints.login, data: loginBody);
 
+        print(response.statusCode);
+
+        print(response.data);
+
         emit(LoginLoadedState(
             loginData: Loginusermodel.fromJson(response.data)));
         String token = response.data['data']['access'];

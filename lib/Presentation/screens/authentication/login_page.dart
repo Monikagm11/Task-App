@@ -4,6 +4,7 @@ import 'package:authenticationapp/utils/constants/color_constants.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'registration_page.dart';
 
@@ -49,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
           child: Stack(
             children: [
               Container(
-                  height: 350,
+                  height: 350.h,
                   width: double.infinity,
                   decoration: const BoxDecoration(
                     color: ColorConstant.blue,
@@ -62,25 +63,25 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        height: 80,
-                        width: 80,
+                        height: 80.h,
+                        width: 80.w,
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.white),
                             borderRadius: BorderRadius.circular(70)),
-                        child: const Icon(
+                        child: Icon(
                           Icons.keyboard_arrow_down_rounded,
                           color: ColorConstant.white,
-                          size: 80,
+                          size: 80.r,
                         ),
                       ),
-                      const SizedBox(
-                        height: 10,
+                      SizedBox(
+                        height: 10.h,
                       ),
-                      const Text(
+                      Text(
                         "Welcome!!",
                         style: TextStyle(
                             color: ColorConstant.white,
-                            fontSize: 40,
+                            fontSize: 40.sp,
                             fontWeight: FontWeight.bold),
                       )
                     ],
@@ -97,10 +98,11 @@ class _LoginPageState extends State<LoginPage> {
                       surfaceTintColor: Colors.white,
                       elevation: 2,
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 40, 10, 40),
+                        padding: const EdgeInsets.fromLTRB(10, 40, 10, 40).r,
                         child: Column(
                           children: [
                             TextFormField(
+                              //autofocus: true,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return "Email can't be empty";
@@ -135,8 +137,8 @@ class _LoginPageState extends State<LoginPage> {
                                     borderSide: BorderSide.none),
                               ),
                             ),
-                            const SizedBox(
-                              height: 20,
+                            SizedBox(
+                              height: 20.h,
                             ),
                             TextFormField(
                               validator: (value) {
@@ -189,27 +191,27 @@ class _LoginPageState extends State<LoginPage> {
                                     borderSide: BorderSide.none),
                               ),
                             ),
-                            const SizedBox(
-                              height: 20,
+                            SizedBox(
+                              height: 20.h,
                             ),
                             InkWell(
                               onTap: () {},
-                              child: const Align(
+                              child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Padding(
-                                  padding: EdgeInsets.only(left: 10),
+                                  padding: const EdgeInsets.only(left: 10).r,
                                   child: Text(
                                     "Forgot Password?",
                                     style: TextStyle(
                                       color: ColorConstant.blue,
-                                      fontSize: 15,
+                                      fontSize: 15.sp,
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                            const SizedBox(
-                              height: 50,
+                            SizedBox(
+                              height: 50.h,
                             ),
                             BlocListener<LoginBloc, LoginState>(
                               listener: (context, state) {
@@ -241,20 +243,21 @@ class _LoginPageState extends State<LoginPage> {
                                   }
                                 },
                                 style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
+                                    backgroundColor: WidgetStateProperty.all(
                                         ColorConstant.blue),
-                                    padding: MaterialStateProperty.all(
+                                    padding: WidgetStateProperty.all(
                                         const EdgeInsets.symmetric(
-                                            horizontal: 80, vertical: 15))),
-                                child: const Text(
+                                                horizontal: 80, vertical: 15)
+                                            .r)),
+                                child: Text(
                                   "LogIn",
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 15),
+                                      color: Colors.white, fontSize: 15.sp),
                                 ),
                               ),
                             ),
-                            const SizedBox(
-                              height: 20,
+                            SizedBox(
+                              height: 20.h,
                             ),
                             Row(
                               mainAxisSize: MainAxisSize.min,
@@ -269,11 +272,11 @@ class _LoginPageState extends State<LoginPage> {
                                               const RegistrationPage(),
                                         ));
                                   },
-                                  child: const Text(
+                                  child: Text(
                                     "Register",
                                     style: TextStyle(
                                         color: ColorConstant.blue,
-                                        fontSize: 16),
+                                        fontSize: 16.sp),
                                   ),
                                 )
                               ],

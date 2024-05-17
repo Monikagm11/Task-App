@@ -3,6 +3,7 @@ import 'package:authenticationapp/bloc/register_bloc/register_bloc.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../utils/constants/color_constants.dart';
 
@@ -71,11 +72,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       const SizedBox(
                         height: 10,
                       ),
-                      const Text(
+                      Text(
                         "Register",
                         style: TextStyle(
                             color: ColorConstant.white,
-                            fontSize: 40,
+                            fontSize: 40.sp,
                             fontWeight: FontWeight.bold),
                       )
                     ],
@@ -301,9 +302,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   }
                                 },
                                 style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
+                                    backgroundColor: WidgetStateProperty.all(
                                         ColorConstant.blue),
-                                    padding: MaterialStateProperty.all(
+                                    padding: WidgetStateProperty.all(
                                         const EdgeInsets.symmetric(
                                             horizontal: 80, vertical: 15))),
                                 child: const Text(

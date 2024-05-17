@@ -1,7 +1,6 @@
 import 'package:authenticationapp/Presentation/screens/home/view_task.dart';
 import 'package:authenticationapp/bloc/edit_task_bloc/edit_task_bloc.dart';
 import 'package:authenticationapp/data/task_model.dart';
-import 'package:authenticationapp/utils/constants/color_constants.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +20,7 @@ class _EditTaskPage extends State<EditTaskPage> {
   TextEditingController startdate_controller = TextEditingController();
   TextEditingController enddate_controller = TextEditingController();
 
-  final task_key = GlobalKey<FormState>();
+  final _key = GlobalKey<FormState>();
   final DateTime start_date = DateTime.now();
 
   @override
@@ -38,11 +37,12 @@ class _EditTaskPage extends State<EditTaskPage> {
     // var a = DateFormat();
     final size = MediaQuery.sizeOf(context);
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 244, 244, 244),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text(
+        title: Text(
           "Add Tasks",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.red[300]),
         ),
         centerTitle: true,
         leading: IconButton(
@@ -55,39 +55,14 @@ class _EditTaskPage extends State<EditTaskPage> {
             },
             icon: const Icon(
               Icons.arrow_back,
-              color: Colors.white,
+              color: Colors.black,
               size: 30,
             )),
-        backgroundColor: ColorConstant.blue,
-
-        // IconButton(
-        //     onPressed: () {
-        //       Navigator.pop(context);
-        //     },
-        //     icon: const Icon(
-        //       Icons.arrow_back,
-        //       color: Colors.white,
-        //       size: 35,
-        //     )),
-
-        // actions: [
-        //   IconButton(
-        //       onPressed: () {
-        //         Navigator.push(
-        //             context,
-        //             MaterialPageRoute(
-        //                 builder: (context) => const ViewTaskPage()));
-        //       },
-        //       icon: const Icon(
-        //         Icons.task,
-        //         size: 35,
-        //         color: Color.fromARGB(255, 244, 228, 87),
-        //       ))
-        // ],
+        backgroundColor: const Color.fromARGB(255, 244, 244, 244),
       ),
       body: SingleChildScrollView(
         child: Form(
-            key: task_key,
+            key: _key,
             child: Container(
               margin: const EdgeInsets.all(10),
               padding: const EdgeInsets.fromLTRB(20, 40, 20, 40),
@@ -96,6 +71,12 @@ class _EditTaskPage extends State<EditTaskPage> {
               child: Column(
                 children: [
                   TextFormField(
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Field cannot be empty";
+                      }
+                      return null;
+                    },
                     controller: title_controller,
                     style: const TextStyle(
                       decoration: TextDecoration.none,
@@ -104,16 +85,21 @@ class _EditTaskPage extends State<EditTaskPage> {
                     decoration: const InputDecoration(
                         hintText: "Title",
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: ColorConstant.blue),
+                          borderSide: BorderSide(color: Colors.grey),
                         )),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   TextFormField(
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Field cannot be empty";
+                      }
+                      return null;
+                    },
                     controller: description_controller,
                     maxLines: 2,
-                    // maxLines: 30,
                     style: const TextStyle(
                       decoration: TextDecoration.none,
                       decorationThickness: 0,
@@ -121,7 +107,7 @@ class _EditTaskPage extends State<EditTaskPage> {
                     decoration: const InputDecoration(
                         enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
-                          color: ColorConstant.blue,
+                          color: Colors.grey,
                         )),
                         hintText: "Description"),
                   ),
@@ -129,6 +115,12 @@ class _EditTaskPage extends State<EditTaskPage> {
                     height: 20,
                   ),
                   TextFormField(
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Field cannot be empty";
+                      }
+                      return null;
+                    },
                     onTap: () async {
                       final pickdate = await showDatePicker(
                           context: context,
@@ -150,7 +142,7 @@ class _EditTaskPage extends State<EditTaskPage> {
                     decoration: const InputDecoration(
                         enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
-                          color: ColorConstant.blue,
+                          color: Colors.grey,
                         )),
                         hintText: "Start Date"),
                   ),
@@ -158,6 +150,12 @@ class _EditTaskPage extends State<EditTaskPage> {
                     height: 20,
                   ),
                   TextFormField(
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Field cannot be empty";
+                      }
+                      return null;
+                    },
                     onTap: () async {
                       final pickendDate = await showDatePicker(
                           context: context,
@@ -171,7 +169,6 @@ class _EditTaskPage extends State<EditTaskPage> {
                     },
                     controller: enddate_controller,
                     maxLines: 2,
-                    // maxLines: 30,
                     style: const TextStyle(
                       decoration: TextDecoration.none,
                       decorationThickness: 0,
@@ -179,7 +176,7 @@ class _EditTaskPage extends State<EditTaskPage> {
                     decoration: const InputDecoration(
                         enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
-                          color: ColorConstant.blue,
+                          color: Colors.grey,
                         )),
                         hintText: "End Date"),
                   ),
@@ -193,14 +190,14 @@ class _EditTaskPage extends State<EditTaskPage> {
                       }
                       if (state is EditTaskLoadedState) {
                         BotToast.closeAllLoading();
-                        BotToast.showText(
-                          text: "Task succesfully edited",
-                        );
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const ViewTaskPage(),
                             ));
+                        BotToast.showText(
+                          text: "Task succesfully edited",
+                        );
                       }
                       if (state is EditTaskErrorState) {
                         BotToast.closeAllLoading();
@@ -209,28 +206,30 @@ class _EditTaskPage extends State<EditTaskPage> {
                     },
                     child: ElevatedButton(
                         style: ButtonStyle(
-                            shape: MaterialStateProperty.all(
+                            shape: WidgetStateProperty.all(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5))),
-                            padding: MaterialStateProperty.all(
+                            padding: WidgetStateProperty.all(
                                 const EdgeInsets.fromLTRB(80, 15, 80, 15)),
                             backgroundColor:
-                                MaterialStateProperty.all(ColorConstant.blue)),
+                                WidgetStateProperty.all(Colors.green[300])),
                         onPressed: () {
-                          BlocProvider.of<EditTaskBloc>(context).add(
-                              EditTaskButtonClickedEvent(
-                                  title: title_controller.text,
-                                  description: description_controller.text,
-                                  startdate: start_date.toString(),
-                                  enddate: enddate_controller.toString(),
-                                  id: widget.data.id));
+                          if (_key.currentState!.validate()) {
+                            BlocProvider.of<EditTaskBloc>(context).add(
+                                EditTaskButtonClickedEvent(
+                                    title: title_controller.text,
+                                    description: description_controller.text,
+                                    startdate: start_date.toString(),
+                                    enddate: enddate_controller.toString(),
+                                    id: widget.data.id));
 
-                          setState(() {
-                            title_controller.text = "";
-                            description_controller.text = "";
-                            startdate_controller.text = "";
-                            enddate_controller.text = "";
-                          });
+                            setState(() {
+                              title_controller.text = "";
+                              description_controller.text = "";
+                              startdate_controller.text = "";
+                              enddate_controller.text = "";
+                            });
+                          }
                         },
                         child: const Text(
                           "Update Task",

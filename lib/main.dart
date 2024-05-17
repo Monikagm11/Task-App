@@ -1,4 +1,4 @@
-import 'package:authenticationapp/Presentation/screens/authentication/login_page.dart';
+import 'package:authenticationapp/Presentation/screens/authentication/registration_page.dart';
 import 'package:authenticationapp/bloc/delete_task_bloc/delete_task_bloc.dart';
 import 'package:authenticationapp/bloc/edit_task_bloc/edit_task_bloc.dart';
 import 'package:authenticationapp/bloc/login_bloc/login_bloc.dart';
@@ -8,6 +8,7 @@ import 'package:authenticationapp/bloc/update_taskbloc/update_task_bloc.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'bloc/add_task_bloc/add_task_bloc_bloc.dart';
 import 'bloc/view_task_bloc/viewtask_bloc.dart';
@@ -45,22 +46,27 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => EditTaskBloc(),
         ),
-         BlocProvider(
+        BlocProvider(
           create: (context) => DeleteTaskBloc(),
         ),
       ],
-      child: MaterialApp(
-        title: 'Authentication',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 165, 121, 243)),
-          useMaterial3: true,
-        ),
-        debugShowCheckedModeBanner: false,
-        builder: BotToastInit(),
-        navigatorObservers: [BotToastNavigatorObserver()],
-        home: const LoginPage(),
-      ),
+      child: ScreenUtilInit(
+          designSize: Size(MediaQuery.sizeOf(context).width,
+              MediaQuery.sizeOf(context).height),
+          builder: (context, child) {
+            return MaterialApp(
+              title: 'Authentication',
+              theme: ThemeData(
+                colorScheme: ColorScheme.fromSeed(
+                    seedColor: const Color.fromARGB(255, 165, 121, 243)),
+                useMaterial3: true,
+              ),
+              debugShowCheckedModeBanner: false,
+              builder: BotToastInit(),
+              navigatorObservers: [BotToastNavigatorObserver()],
+              home: const RegistrationPage(),
+            );
+          }),
     );
   }
 }
